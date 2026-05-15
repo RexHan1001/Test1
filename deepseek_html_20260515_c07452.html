@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>星空起始页 | 个人网页 · 可公网访问</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 0.8) 35%, rgba(0, 20, 30, 1) 100%);
+            min-height: 100vh;
+            color: #f0f3fa;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+            position: relative;
+        }
+
+        /* 动态星空粒子（纯css 极简效果） */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                              radial-gradient(1px 1px at 60px 120px, #fffa, rgba(0,0,0,0));
+            background-size: 200px 200px, 150px 150px;
+            background-repeat: repeat;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 头部区域 */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            backdrop-filter: blur(2px);
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(8px);
+            border-radius: 100px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B2F0FF 50%, #A0D6FF 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .subhead {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+            backdrop-filter: blur(4px);
+        }
+
+        .glow-card {
+            background: rgba(20, 30, 45, 0.55);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.4);
+            transition: all 0.2s ease;
+        }
+
+        /* 部署指南卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: rgba(15, 25, 40, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 1.75rem;
+            padding: 1.8rem;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 35px -12px rgba(0,0,0,0.5);
+            border-color: rgba(100, 200, 255, 0.4);
+            background: rgba(25, 40, 60, 0.7);
+        }
+
+        .card-icon {
+            font-size: 2.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.3px;
+        }
+
+        .card p {
+            color: #d1e0ff;
+            margin-bottom: 1.2rem;
+            font-size: 0.95rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0 1.2rem;
+        }
+
+        .feature-list li {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: "✨";
+            font-size: 0.8rem;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 2rem;
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: white;
+        }
+
+        /* 快捷工具区 */
+        .tools-section {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1.2rem 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .time-greeting {
+            font-size: 1rem;
+            font-weight: 500;
+            background: rgba(255,255,255,0.1);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+        }
+
+        .deploy-tip {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .copy-btn {
+            background: rgba(0, 210, 210, 0.2);
+            border: 1px solid #2dd4bf;
+            padding: 0.4rem 1rem;
+            border-radius: 32px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #bff5ff;
+        }
+
+        .copy-btn:hover {
+            background: rgba(45, 212, 191, 0.4);
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 700px) {
+            h1 {
+                font-size: 2.3rem;
+            }
+            .subhead {
+                font-size: 1rem;
+            }
+            .tools-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* 鼠标点击反馈 */
+        button, .copy-btn {
+            user-select: none;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部欢迎区域 -->
+    <div class="hero">
+        <div class="badge">✨ 轻量级 · 即刻部署 ✨</div>
+        <h1>搭建你的公网站点</h1>
+        <div class="subhead">
+            一份代码，全球访问。选择最适合你的发布方案，让世界看到你的作品。
+        </div>
+    </div>
+
+    <!-- 三种核心部署方案卡片 (结合之前问答) -->
+    <div class="cards-grid">
+        <!-- 云服务器方案 -->
+        <div class="card">
+            <div class="card-icon">☁️</div>
+            <h3>云服务器</h3>
+            <p>专业稳定 · 全功能支持<br>租用云端主机，24h在线，可运行后端程序。</p>
+            <ul class="feature-list">
+                <li>固定公网IP + 高性能</li>
+                <li>支持 PHP / Node / 数据库</li>
+                <li>搭配宝塔面板一键建站</li>
+            </ul>
+            <div class="btn-outline" onclick="alert('推荐阿里云/腾讯云轻量服务器，新手镜像选WordPress或LAMP，安全组放行80/443端口即可。')">📘 快速指引</div>
+        </div>
+
+        <!-- 静态托管方案 (GitHub Pages 等) -->
+        <div class="card">
+            <div class="card-icon">🚀</div>
+            <h3>静态托管</h3>
+            <p>完全免费 · 自带CDN加速<br>适合纯前端 / 博客 / 作品集</p>
+            <ul class="feature-list">
+                <li>GitHub Pages / Vercel / Netlify</li>
+                <li>支持自定义域名 + 自动 HTTPS</li>
+                <li>搭配 Hexo / VuePress 极速发布</li>
+            </ul>
+            <div class="btn-outline" onclick="alert('只需新建仓库 username.github.io，上传 HTML/CSS/JS 并开启 Pages，即可公网访问！')">📘 快速指引</div>
+        </div>
+
+        <!-- 内网穿透 + 本地主机 -->
+        <div class="card">
+            <div class="card-icon">🏠</div>
+            <h3>内网穿透</h3>
+            <p>零成本尝鲜 · 本地开发即时分享<br>无需公网IP，一键映射本地服务。</p>
+            <ul class="feature-list">
+                <li>frp / Ngrok / 花生壳</li>
+                <li>适合临时演示 / 测试API</li>
+                <li>保持电脑开机即可外网访问</li>
+            </ul>
+            <div class="btn-outline" onclick="alert('推荐使用 Serveo (ssh -R 80:localhost:3000 serveo.net) 或 本地运行 ‘npx localtunnel’ 一秒暴露端口。')">📘 快速指引</div>
+        </div>
+    </div>
+
+    <!-- 实用小工具 + 部署彩蛋 -->
+    <div class="tools-section">
+        <div class="time-greeting" id="greetingBox">
+            🌟 加载时间...
+        </div>
+        <div class="deploy-tip">
+            <span style="font-size: 0.9rem;">📎 想要直接部署当前这个网页？</span>
+            <div class="copy-btn" id="copyHtmlBtn">📋 复制本页代码</div>
+            <div class="copy-btn" id="deployIdeaBtn">🧠 部署建议</div>
+        </div>
+    </div>
+
+    <!-- 额外小彩蛋：命令行风格展示最简单的本地启动方式 -->
+    <div class="glow-card" style="padding: 1rem 1.8rem; margin-bottom: 2rem; background: rgba(0,0,0,0.45);">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: space-between;">
+            <div style="font-family: monospace; font-size: 0.85rem;">
+                <span style="color: #9ef7e3;">$</span> 一分钟测试公网访问: 
+                <span style="background: #1e2a3a; padding: 0.2rem 0.5rem; border-radius: 12px;">python3 -m http.server 8000</span> 
+                ➕ 内网穿透工具即可上线
+            </div>
+            <div class="copy-btn" id="copyCommandBtn">📝 复制命令</div>
+        </div>
+    </div>
+
+    <!-- 页脚 附带个人色彩 -->
+    <footer>
+        🌐 任何方案只需要一个 <strong>index.html</strong> 就能起步 · 把这份网页上传到服务器/对象存储/GitHub 即刻上线<br>
+        ✨ 设计即部署 · 你的互联网第一站 ✨
+    </footer>
+</div>
+
+<script>
+    // 动态问候 + 实时时钟
+    function updateGreeting() {
+        const now = new Date();
+        const hours = now.getHours();
+        let greeting = "";
+        if (hours >= 5 && hours < 12) greeting = "🌅 早安，开发者";
+        else if (hours >= 12 && hours < 18) greeting = "☀️ 下午好，创意家";
+        else if (hours >= 18 && hours < 22) greeting = "🌙 傍晚好，星辰探索者";
+        else greeting = "🌃 深夜奋斗，注意休息 ~";
+        
+        const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second:'2-digit' });
+        document.getElementById('greetingBox').innerHTML = `${greeting} · ${timeStr}`;
+    }
+    updateGreeting();
+    setInterval(updateGreeting, 1000);
+
+    // 复制整个HTML代码
+    const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+    copyHtmlBtn.addEventListener('click', async () => {
+        try {
+            const htmlContent = document.documentElement.outerHTML;
+            await navigator.clipboard.writeText(htmlContent);
+            alert('✅ 网页源码已复制！你可以直接粘贴到本地 index.html，然后通过任意部署方式上线公网。');
+        } catch (err) {
+            // 降级方案
+            const textarea = document.createElement('textarea');
+            textarea.value = document.documentElement.outerHTML;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('📋 复制成功 (降级模式)，代码已保存在剪贴板');
+        }
+    });
+
+    // 部署建议弹窗
+    const deployIdeaBtn = document.getElementById('deployIdeaBtn');
+    deployIdeaBtn.addEventListener('click', () => {
+        const message = `🎯 三种极速部署路径参考：
+1️⃣ 【最快免费】GitHub Pages:
+   - 新建仓库 你的用户名.github.io
+   - 上传当前 index.html
+   - Settings → Pages → 选择 main 分支 → 访问 https://用户名.github.io
+
+2️⃣ 【云服务器新手友好】:
+   - 购买轻量应用服务器 (1核2G足够)
+   - 安装宝塔面板 → 一键部署 Nginx
+   - 上传本网页到 /www/wwwroot/ 目录
+   - 安全组放行 80 端口 → 用 IP 或域名访问
+
+3️⃣ 【零成本本地分享】:
+   - 电脑安装 Node.js 运行 npx localtunnel --port 3000
+   - 或 使用 serveo: ssh -R 80:localhost:8080 serveo.net
+   - 立刻获得公网临时域名
+
+💡 无论哪种方式，你已拥有这个精美的起始页，让世界看到你的创造。`;
+        alert(message);
+    });
+
+    // 复制简易命令
+    const copyCommandBtn = document.getElementById('copyCommandBtn');
+    copyCommandBtn.addEventListener('click', async () => {
+        const cmd = "python3 -m http.server 8000";
+        try {
+            await navigator.clipboard.writeText(cmd);
+            alert(`命令 "${cmd}" 已复制！在本地网页目录运行即可开启本地服务器，然后搭配内网穿透使用。`);
+        } catch (e) {
+            const textarea = document.createElement('textarea');
+            textarea.value = cmd;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            alert('命令已复制！');
+        }
+    });
+
+    // 控制台友好输出
+    console.log("✨ 网页已加载 — 尝试使用上方工具快速部署到公网！");
+</script>
+</body>
+</html>
